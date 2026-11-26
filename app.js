@@ -753,7 +753,11 @@ async function init() {
     }
   };
   render();
-  if ("serviceWorker" in navigator)
-    navigator.serviceWorker.register("./sw.js").catch(console.error);
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+      .register("./sw.js", { updateViaCache: "none" })
+      .then((registration) => registration.update())
+      .catch(console.error);
+  }
 }
 init();
