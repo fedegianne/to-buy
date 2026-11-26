@@ -1,19 +1,125 @@
 # To Buy
 
-A personal, offline-first shopping reminder PWA. No build step or dependencies.
+**To Buy** is a lightweight shopping reminder app designed to help you remember what to buy and where to buy it.
 
-## Run locally
+Organize your shopping list using custom tags for shops, shopping centres, geographical areas or online stores. When you're heading somewhere, simply select the relevant tags to see what you need to buy.
 
-```sh
-python3 -m http.server 8000
+Free, offline-capable and without accounts, advertisements or subscriptions.
+
+## Installation
+
+**[Open To Buy](https://fedegianne.github.io/to-buy/)**
+
+To Buy is a Progressive Web App (PWA) that can be installed directly on your device without using an app store.
+
+### iPhone / iPad
+
+1. Open the app link in Safari.
+2. Tap the Share button.
+3. Select **Add to Home Screen**.
+4. Enable **Open as Web App**, if available.
+5. Tap **Add**.
+
+### Android
+
+1. Open the app link in Chrome.
+2. Tap the three-dot menu.
+3. Select **Install app** or **Add to Home screen**.
+4. Confirm the installation.
+
+The app can also be used directly from a desktop browser.
+
+## Features
+
+- Create, edit and delete shopping reminders.
+- Assign multiple custom tags to each item.
+- Search, filter and group items by tag.
+- Mark important items as priorities.
+- Add notes and product links.
+- Keep track of previous purchases.
+- Restore purchased items or buy them again.
+- Create, rename, merge and delete tags.
+- Automatic, light and dark appearance modes.
+- Offline functionality.
+- Local data storage with backup and restore.
+
+## How to use
+
+### To Buy
+
+Add items to your shopping list using the **+** button. Only the item name is required. Tags, priority, notes and product links are optional.
+
+Each item can have multiple tags. For example:
+
+| Item | Tags |
+|---|---|
+| Jeans | H&M, Zara, Euroma2 |
+| Sandpaper | Leroy Merlin, Bricocenter |
+| USB-C cable | MediaWorld, Amazon |
+| Gym shoes | Decathlon |
+
+Select one or more tags to filter your shopping list. Items matching any of the selected tags will be displayed.
+
+When an item is purchased, mark it as completed. It will be removed from all active groups and moved to History.
+
+### Tags
+
+View and manage your custom tags, along with the number of outstanding items associated with each tag.
+
+Select a tag to view its shopping list. Tags can also be renamed, merged or deleted. Renaming or merging a tag updates both active items and purchase history.
+
+### History
+
+Access previously purchased items.
+
+- **Restore:** undo a purchase and return the item to the active shopping list.
+- **Buy again:** create a new shopping reminder while preserving the original purchase record.
+
+### Settings
+
+Customize the app appearance and manage your data through the backup and restore functions.
+
+## Data and privacy
+
+All personal data is stored locally on your device using IndexedDB. No personal records are uploaded to an external database.
+
+The app does not require an account and does not automatically synchronize data between devices.
+
+## Backup and restore
+
+Export your shopping list, tags, purchase history and settings as a JSON backup file from the Settings page.
+
+To recover your data, select a previously exported backup file using the Restore function. Restoring a backup replaces the current app data.
+
+**Regular backups are recommended. Always create a backup before:**
+
+- Removing or reinstalling the app.
+- Clearing browser or application storage.
+- Changing your device.
+- Resetting your device.
+
+Keep backup files in a safe location, such as iCloud Drive, Google Drive or your computer.
+
+## Offline use and updates
+
+After the first successful online launch, the app can be used without an internet connection.
+
+An internet connection is required to receive application updates. Updates are downloaded automatically and normally do not affect locally stored data.
+
+## Development
+
+Built using HTML, CSS, vanilla JavaScript, IndexedDB and Service Workers. No external dependencies or build tools are required.
+
+### Run locally
+
+```bash
+python3 -m http.server 8001
 ```
 
-Open http://localhost:8000. Add an item, choose any number of equivalent tags, and optionally add a priority flag, notes or product link. Multiple selected tags match ANY selected tag. Grouped view can show one item under several tags; purchasing it removes it everywhere. History supports Restore (undo a purchase) and Buy again (new item, retains history). Renaming or merging a tag updates all records including history.
+Open `http://localhost:8001` in your browser.
 
-## Deployment
+### Deployment
 
-Push these files to a dedicated GitHub repository and enable GitHub Pages from the main branch root. Open its HTTPS URL on iPhone Safari and Add to Home Screen (Open as Web App). Open online once before using offline. Increment the cache name in sw.js for every functional release.
+The app is hosted using GitHub Pages. Changes pushed to the main branch are automatically deployed.
 
-## Data
-
-IndexedDB stores data on this browser/device. No sync or backend. Export JSON backups from Settings and save them independently (e.g. iCloud Drive). Restore replaces all current data after confirmation. Localhost and GitHub Pages use different storage; transfer using backup/restore. Clearing app storage or removing the app can lose data. Avoid editing in multiple simultaneous tabs because state is saved as one record.
+Increment the service worker cache version in `sw.js` when releasing functional or visual updates.
