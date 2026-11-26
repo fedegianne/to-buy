@@ -561,8 +561,21 @@ function renderSettings() {
     ),
     panel(
       el("h2", "About To Buy"),
-      el("p", "Version 1.1 · Offline-first PWA", "muted"),
-      el("p", "No accounts, tracking or cloud synchronization.", "muted"),
+      el("p", "Version 1.2 · Offline-first PWA", "muted"),
+      el("p", "Free, with no accounts, ads or cloud synchronization.", "muted"),
+    ),
+    panel(
+      el("h2", "Privacy & Analytics"),
+      el(
+        "p",
+        "Your personal records are stored locally on your device and are not uploaded to a server.",
+        "muted",
+      ),
+      el(
+        "p",
+        "Cloudflare Web Analytics collects aggregate usage statistics without accessing your saved records or using tracking cookies.",
+        "muted",
+      ),
     ),
   );
 }

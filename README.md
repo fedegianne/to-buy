@@ -81,9 +81,15 @@ Customize the app appearance and manage your data through the backup and restore
 
 ## Data and privacy
 
-All personal data is stored locally on your device using IndexedDB. No personal records are uploaded to an external database.
+All personal records are stored locally on your device using IndexedDB. No personal records are uploaded to an external database.
 
 The app does not require an account and does not automatically synchronize data between devices.
+
+Cloudflare Web Analytics is used to collect privacy-focused, aggregate website usage statistics, such as page visits, browser type, operating system, approximate geographical region and loading performance.
+
+Analytics does not access personal records stored within the app and does not use tracking cookies.
+
+For further information, see the [Cloudflare Privacy Policy](https://www.cloudflare.com/privacypolicy/).
 
 ## Backup and restore
 
