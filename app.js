@@ -388,12 +388,17 @@ function renderTags() {
   );
   for (const tag of sorted(state.tags)) {
     const count = activeItems().filter((i) => i.tags.includes(tag)).length;
+    const actions = el("div", undefined, "tag-actions");
+    const merge = button("Merge", () => mergeTag(tag));
+    merge.disabled = state.tags.length < 2;
+    actions.append(
+      button("Rename", () => renameTag(tag)),
+      merge,
+    );
     main.append(
       panel(
-        line(
-          button(`${tag} · ${count} to buy`, () => navigate("active", tag)),
-          button("Rename / merge", () => renameTag(tag)),
-        ),
+        button(`${tag} · ${count} to buy`, () => navigate("active", tag)),
+        actions,
         button("Delete tag", () => deleteTag(tag), "danger"),
       ),
     );
@@ -412,20 +417,88 @@ function renderTags() {
     ),
   );
 }
+// Renaming never merges tags; merging must select an existing destination.
 function renameTag(old) {
-  const name = prompt(
-    "Rename tag (enter an existing name to merge)",
-    old,
-  )?.trim();
-  if (!name || name === old || name.length > 80) return;
-  const existing = state.tags.find((t) => t !== old && key(t) === key(name));
-  if (existing && !confirm(`Merge ${old} into ${existing}?`)) return;
+  const name = prompt("Rename tag", old)?.trim();
+  if (!name || name === old) return;
+  if (name.length > 80) {
+    message("Tag names must be at most 80 characters.");
+    return;
+  }
+  if (state.tags.some((t) => t !== old && key(t) === key(name))) {
+    message("That tag already exists. Use Merge instead.");
+    return;
+  }
+  replaceTag(old, name);
+}
+
+function mergeTag(old) {
+  const targets = sorted(state.tags.filter((t) => t !== old));
+  if (!targets.length) return;
+
+  const dialog = el("dialog");
+  const form = el("form");
+  const heading = el("h2", `Merge ${old}`);
+  heading.id = "merge-heading";
+  dialog.setAttribute("aria-labelledby", heading.id);
+  const label = el("label", "Merge into");
+  const select = el("select");
+  select.required = true;
+  const placeholder = el("option", "Select an existing tag");
+  placeholder.value = "";
+  placeholder.disabled = true;
+  placeholder.selected = true;
+  select.append(placeholder);
+  for (const tag of targets) {
+    const option = el("option", tag);
+    option.value = tag;
+    select.append(option);
+  }
+  label.append(select);
+  const submit = el("button", "Merge tags", "primary");
+  submit.type = "submit";
+  submit.disabled = true;
+  select.addEventListener("change", () => {
+    submit.disabled = !targets.includes(select.value);
+  });
+  form.append(
+    heading,
+    el(
+      "p",
+      "All active and purchased items will use the selected tag. The original tag will be removed.",
+      "muted",
+    ),
+    label,
+    line(
+      button("Cancel", () => dialog.close()),
+      submit,
+    ),
+  );
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const target = select.value;
+    if (
+      !state.tags.includes(old) ||
+      target === old ||
+      !state.tags.includes(target)
+    )
+      return;
+    dialog.close();
+    replaceTag(old, target);
+  });
+  dialog.append(form);
+  document.body.append(dialog);
+  dialog.addEventListener("close", () => dialog.remove(), { once: true });
+  dialog.showModal();
+}
+
+function replaceTag(old, target) {
   change((s) => {
-    const target = existing || name;
     s.tags = s.tags.filter((t) => t !== old);
     if (!s.tags.includes(target)) s.tags.push(target);
-    for (const item of s.items)
+    for (const item of s.items) {
       item.tags = [...new Set(item.tags.map((t) => (t === old ? target : t)))];
+    }
   });
 }
 function deleteTag(tag) {
@@ -488,7 +561,7 @@ function renderSettings() {
     ),
     panel(
       el("h2", "About To Buy"),
-      el("p", "Version 1.0 · Offline-first PWA", "muted"),
+      el("p", "Version 1.1 · Offline-first PWA", "muted"),
       el("p", "No accounts, tracking or cloud synchronization.", "muted"),
     ),
   );
