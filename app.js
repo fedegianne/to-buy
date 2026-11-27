@@ -21,12 +21,18 @@ let editing = null,
   toastTimer;
 let saving = false;
 const backups = createBackupTools({
-  slug: "to-buy", name: "To Buy", version: "1.3.0",
+  slug: "to-buy",
+  name: "To Buy",
+  version: "1.3.1",
   records: () => ({ items: state.items, tags: state.tags }),
   hasRecords: () => Boolean(state.items.length || state.tags.length),
   snapshot: () => ({ format: "to-buy", version: 1, ...structuredClone(state) }),
-  exportNormal: () => exportBackup(), restore: () => $("import").click(),
-  lastNormal: () => state.lastBackup ? `Last normal export: ${dateLabel(state.lastBackup)}` : "No normal backup exported yet",
+  exportNormal: () => exportBackup(),
+  restore: () => $("import").click(),
+  lastNormal: () =>
+    state.lastBackup
+      ? `Last normal export: ${dateLabel(state.lastBackup)}`
+      : "No normal backup exported yet",
   refresh: () => render(),
 });
 
@@ -734,7 +740,8 @@ async function init() {
   render();
   void backups.requestPersistence();
   document.addEventListener("visibilitychange", () => {
-    if (!document.hidden && page === "active" && !editor.open) backups.reminder(main);
+    if (!document.hidden && page === "active" && !editor.open)
+      backups.reminder(main);
   });
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker

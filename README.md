@@ -1,6 +1,6 @@
 # To Buy
 
-Version 1.3.0 · Offline-first PWA.
+Version 1.3.1 · Offline-first PWA.
 
 
 **To Buy** is a lightweight shopping reminder app designed to help you remember what to buy and where to buy it.
