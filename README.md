@@ -1,77 +1,140 @@
-# UltraGYM
+# To Buy
 
-Version 1.1.1 — personal, offline-first strength training log. No accounts, backend or advertisements. Cloudflare Web Analytics collects aggregate usage statistics without accessing local workout records. Designed for iPhone Home Screen installation, with the same muted green palette as To Buy.
+Version 1.3.1 · Offline-first PWA.
 
-## Run locally
 
-Open a terminal in this folder and run:
+**To Buy** is a lightweight shopping reminder app designed to help you remember what to buy and where to buy it.
 
-```sh
-python3 -m http.server 8002
+Organize your shopping list using custom tags for shops, shopping centres, geographical areas or online stores. When you're heading somewhere, simply select the relevant tags to see what you need to buy.
+
+Free, offline-capable and without accounts, advertisements or subscriptions.
+
+## Installation
+
+**[Open To Buy](https://fedegianne.github.io/to-buy/)**
+
+To Buy is a Progressive Web App (PWA) that can be installed directly on your device without using an app store.
+
+### iPhone / iPad
+
+1. Open the app link in Safari.
+2. Tap the Share button.
+3. Select **Add to Home Screen**.
+4. Enable **Open as Web App**, if available.
+5. Tap **Add**.
+
+### Android
+
+1. Open the app link in Chrome.
+2. Tap the three-dot menu.
+3. Select **Install app** or **Add to Home screen**.
+4. Confirm the installation.
+
+The app can also be used directly from a desktop browser.
+
+## Features
+
+- Create, edit and delete shopping reminders.
+- Assign multiple custom tags to each item.
+- Search, filter and group items by tag.
+- Mark important items as priorities.
+- Add notes and product links.
+- Keep track of previous purchases.
+- Restore purchased items or buy them again.
+- Create, rename, merge and delete tags.
+- Automatic, light and dark appearance modes.
+- Offline functionality.
+- Local data storage with backup and restore.
+
+## How to use
+
+### To Buy
+
+Add items to your shopping list using the **+** button. Only the item name is required. Tags, priority, notes and product links are optional.
+
+Each item can have multiple tags. For example:
+
+| Item | Tags |
+|---|---|
+| Jeans | H&M, Zara, Euroma2 |
+| Sandpaper | Leroy Merlin, Bricocenter |
+| USB-C cable | MediaWorld, Amazon |
+| Gym shoes | Decathlon |
+
+Select one or more tags to filter your shopping list. Items matching any of the selected tags will be displayed.
+
+When an item is purchased, mark it as completed. It will be removed from all active groups and moved to History.
+
+### Tags
+
+View and manage your custom tags, along with the number of outstanding items associated with each tag.
+
+Select a tag to view its shopping list. Tags can also be renamed, merged or deleted. Renaming or merging a tag updates both active items and purchase history.
+
+### History
+
+Access previously purchased items.
+
+- **Restore:** undo a purchase and return the item to the active shopping list.
+- **Buy again:** create a new shopping reminder while preserving the original purchase record.
+
+### Settings
+
+Customize the app appearance and manage your data through the backup and restore functions.
+
+## Data and privacy
+
+All personal records are stored locally on your device using IndexedDB. No personal records are uploaded to an external database.
+
+The app does not require an account and does not automatically synchronize data between devices.
+
+Cloudflare Web Analytics is used to collect privacy-focused, aggregate website usage statistics, such as page visits, browser type, operating system, approximate geographical region and loading performance.
+
+Analytics does not access personal records stored within the app and does not use tracking cookies.
+
+For further information, see the [Cloudflare Privacy Policy](https://www.cloudflare.com/privacypolicy/).
+
+## Backup and restore
+
+Export your shopping list, tags, purchase history and settings as a JSON backup file from the Settings page.
+
+To recover your data, select a previously exported backup file using the Restore function. Restoring a backup replaces the current app data.
+
+**Regular backups are recommended. Always create a backup before:**
+
+- Removing or reinstalling the app.
+- Clearing browser or application storage.
+- Changing your device.
+- Resetting your device.
+
+Keep backup files in a safe location, such as iCloud Drive, Google Drive or your computer.
+
+## Offline use and updates
+
+After the first successful online launch, the app can be used without an internet connection.
+
+An internet connection is required to receive application updates. Updates are downloaded automatically and normally do not affect locally stored data.
+
+## Development
+
+Built using HTML, CSS, vanilla JavaScript, IndexedDB and Service Workers. No external dependencies or build tools are required.
+
+### Run locally
+
+```bash
+python3 -m http.server 8001
 ```
 
-Open <http://localhost:8002/> in your browser. Don't open `index.html` directly: JavaScript modules and the service worker require a web origin. No npm installation or build step is needed. The app starts with an empty exercise library and no sample records.
+Open `http://localhost:8001` in your browser.
 
-For an iPhone, use an HTTPS deployment (such as GitHub Pages). Data entered in localhost, a browser and an installed Home Screen app may be kept in different storage containers.
+### Deployment
 
-## Deploy with GitHub Pages
+The app is hosted using GitHub Pages. Changes pushed to the main branch are automatically deployed.
 
-Create a new repository, e.g. `ultragym`. With GitHub CLI already authenticated, run these commands **inside this folder**, not its parent:
-
-```sh
-git init -b main
-git add .
-git commit -m "Initial UltraGYM release"
-gh repo create ultragym --public --source=. --remote=origin --push
-```
-
-In the repository's Settings → Pages, select **Deploy from a branch**, branch `main`, folder `/ (root)`. Save. Once GitHub reports deployment complete, open the published address in Safari and choose Share → Add to Home Screen. Check the website works before adding it.
-
-## What is implemented
-
-- Home: new/resume workout, latest bodyweight, last finished workout.
-- Workout: single-exercise logging with large weight/reps fields and LOG button, previous-set suggestions, set equipment, RPE/RIR, notes, live statistics and expandable graphs. Every logged set is persisted in IndexedDB. Current workout allows edits/deletion/additions, and finishing shows a summary and rep records.
-- Timer: tap the time to enter minutes and seconds (00:01–99:59), presets, ±30 seconds, start and stop/reset. Logging restarts the configured duration; switching exercises does not stop the timer. Remaining time is calculated from a stored deadline. During an active countdown, ±30 adjusts that countdown only; when stopped it adjusts the default duration. Three slow full-screen white pulses followed by a green glow indicate expiry until the next touch or key press. Reduced-motion mode skips the pulses. No sound, vibration or wake lock.
-- Six measurement types: weight × reps, bodyweight × reps (reps only), time, weight × time, distance (integer m or ft), weight × distance. Time is entered as integer minutes and seconds. Reps and distance reject fractional input; manually entered weights accept decimals.
-- Calendar: inspect, edit, delete or add past workouts; resume only today's sessions. If an unfinished workout is from another day, finish or discard it before starting a new one.
-- Records: favourites, exercise search, muscle-group filtering, exact-repetition records, Epley/Brzycki estimated 1RM, 1/2 years or all time; exercise graphs and session history. Graph windows: 1/3/6/12 months or all time. Equipment filters support any/with/without; imported sets with unknown gear are excluded from specific filters.
-- Bodyweight: optional dated records, notes, edits/deletion and graph. Relative graphs use the most recent bodyweight at or before each workout, and omit points with no eligible measurement. Tap a graph point to see its date, value and bodyweight measurement date when applicable.
-- Weighted bodyweight: set the “Include bodyweight in 1RM calculations” checkbox on a weight × reps exercise. Added load is logged, e1RM is calculated from total load minus bodyweight, and absolute/relative graphs use added load. Bodyweight-only exercises show rep records, not e1RM. Single repetitions use actual added weight.
-- Exercise library: customize name, measurement type, up to two customizable muscle groups, notes; merge compatible exercises and archive unused ones. Measurement types cannot be changed after sets exist, to prevent misinterpreting history. Weighted and unweighted variants are separate exercises.
-- Settings: light/dark/auto, kg/lb and m/ft, e1RM formula and cutoff, increment (only for adjustment buttons), built-in belt/straps/wrist wraps, custom equipment (archive or permanent deletion), editable muscle groups, JSON backup/restore and CSV export. Internal units are kg and metres, avoiding accumulated conversion error when changing display units.
-- Offline service worker caches every required resource locally. No external chart library or network-dependent asset.
-
-## Testing
-
-A real browser integration test was attempted during creation, but the container's managed Chromium blocked local navigation. iPhone Safari and installed-PWA behaviour are not yet verified. Suggested smoke test before using the app as your only workout log:
-
-1. Start a custom workout and create Squat. Log 100 kg × 5; confirm volume, sets, reps, e1RM and the countdown. Log another suggested set, expand details, and try decimals in reps (they must be rejected).
-2. Tap the timer and enter 00:05; start, switch exercise, then check expiry and the visual highlight. Lock the phone for longer than the countdown and reopen it. Confirm the timer shows zero.
-3. Create a bodyweight-only exercise, timed exercise and distance exercise. Confirm only the relevant input fields appear. Edit and delete a completed set in Current workout.
-4. Reload with a workout in progress and resume it. Finish; inspect the calendar, records, graphs, favourites, bodyweight and equipment filters.
-5. Export JSON, restore it into a separate test instance, then verify all data. Try loading offline after the service worker is installed. Check light/dark appearance and Home Screen installation.
-
-## Code structure and updates
-
-- `index.html`, `styles.css`: layout and styling.
-- `js/app.js`: UI, dialogs, workflows and timer.
-- `js/model.js`: data schema, validation, measurements, unit conversions and calculations.
-- `js/db.js`: IndexedDB snapshot persistence; write queue prevents out-of-order saves in the same instance.
-- `js/charts.js`: local SVG charts with date-scaled axes and selectable data points.
-- `sw.js`, `manifest.json`, `icons/`: installation and offline support.
-- `backup.js`: shared emergency export and settings UI.
-
-For each functional or visual update, increment `CACHE` in `sw.js` (e.g. `ultragym-v3`), update the displayed version in Settings and commit/push. Reopening the installed app may be necessary to load the newly activated worker. Do not clear site data or uninstall an app holding your only copy of workout records. Export JSON regularly; JSON is the full backup, while CSV is a tabular set export.
-
-This initial version is intended for one active browser/app instance at a time. Concurrent tabs do not coordinate data writes. No synchronization or automatic remote backup is implemented.
-
-## Deferred
-
-Predefined training programs (Starting Strength, Juggernaut, Reverse Juggernaut, 5/3/1) and custom weekly programs; HeavySet migration; plate calculator; muscle group training statistics; achievements. Workouts have a reserved program field for future integration. No assisted exercises, warm-up classification, supersets, duplicate workouts, separate workout templates or calorie tracking.
-
+Increment the service worker cache version in `sw.js` when releasing functional or visual updates.
 
 ## Emergency backup reminder
 
 Settings → Data and backups offers a device-local reminder every day, every 7 days (default), every 30 days, or Never. The first reminder is due when records exist and no emergency export has been requested. Later reminders require both changed records and the selected interval to have elapsed. Later dismisses the reminder for the current launch/day. The app requests persistent browser storage where supported.
 
-The emergency export creates `ultragym-emergency.json` in the existing JSON backup format. Save it outside the app, preferably in Files or iCloud Drive, and replace the previous emergency file if prompted. The app cannot silently overwrite external files or verify that a download was saved. The displayed timestamp records the export request, not confirmation of a completed save. Normal dated exports are unchanged. Empty emergency exports are disabled; both backup types can be restored through Restore JSON. Reminder preferences and export fingerprints are stored separately on this device, not inside the exported records. Persistent storage is best effort, not a replacement for an external backup.
+The emergency export creates `to-buy-emergency.json` in the existing JSON backup format. Save it outside the app, preferably in Files or iCloud Drive, and replace the previous emergency file if prompted. The app cannot silently overwrite external files or verify that a download was saved. The displayed timestamp records the export request, not confirmation of a completed save. Normal dated exports are unchanged. Empty emergency exports are disabled; both backup types can be restored through Restore JSON. Reminder preferences and export fingerprints are stored separately on this device, not inside the exported records. Persistent storage is best effort, not a replacement for an external backup.
