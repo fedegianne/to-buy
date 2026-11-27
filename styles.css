@@ -286,3 +286,29 @@ dialog form {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
+
+/* Shared settings and external backup reminder */
+.common-settings { display: contents; }
+.common-settings-card {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--border, var(--line));
+  border-radius: 15px;
+  background: var(--card);
+}
+.common-settings-card h2, .common-settings-card p, .common-settings-card label { margin: 0; }
+.common-settings-card h2 { font-size: 18px; }
+.common-settings-card .muted, .common-settings-card small { color: var(--muted); font-size: 13px; line-height: 1.4; }
+.common-settings-card label { font-weight: 600; font-size: 14px; }
+.common-settings-card hr { width: 100%; border: 0; border-top: 1px solid var(--border, var(--line)); margin: 2px 0; }
+.common-backup-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.common-backup-actions button { flex: 1 1 120px; }
+.common-settings-card button:disabled { opacity: .5; cursor: default; }
+.common-settings-card a { color: var(--accent); overflow-wrap: anywhere; }
+
+.common-settings-card button:not(.primary) { background: var(--chip, var(--soft)); color: inherit; border: 1px solid var(--border, var(--line)); border-radius: 11px; font-weight: 600; }
+.common-settings-card button.primary { background: #397c68; color: white; border: 1px solid #397c68; border-radius: 11px; font-weight: 600; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .common-settings-card a { color: #91cbb5; } }
+:root[data-theme="dark"] .common-settings-card a { color: #91cbb5; }

@@ -1,5 +1,8 @@
 # To Buy
 
+Version 1.3.0 · Offline-first PWA.
+
+
 **To Buy** is a lightweight shopping reminder app designed to help you remember what to buy and where to buy it.
 
 Organize your shopping list using custom tags for shops, shopping centres, geographical areas or online stores. When you're heading somewhere, simply select the relevant tags to see what you need to buy.
@@ -129,3 +132,9 @@ Open `http://localhost:8001` in your browser.
 The app is hosted using GitHub Pages. Changes pushed to the main branch are automatically deployed.
 
 Increment the service worker cache version in `sw.js` when releasing functional or visual updates.
+
+## Emergency backup reminder
+
+Settings → Data and backups offers a device-local reminder every day, every 7 days (default), every 30 days, or Never. The first reminder is due when records exist and no emergency export has been requested. Later reminders require both changed records and the selected interval to have elapsed. Later dismisses the reminder for the current launch/day. The app requests persistent browser storage where supported.
+
+The emergency export creates `to-buy-emergency.json` in the existing JSON backup format. Save it outside the app, preferably in Files or iCloud Drive, and replace the previous emergency file if prompted. The app cannot silently overwrite external files or verify that a download was saved. The displayed timestamp records the export request, not confirmation of a completed save. Normal dated exports are unchanged. Empty emergency exports are disabled; both backup types can be restored through Restore JSON. Reminder preferences and export fingerprints are stored separately on this device, not inside the exported records. Persistent storage is best effort, not a replacement for an external backup.

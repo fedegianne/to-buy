@@ -1,3 +1,4 @@
+import { createBackupTools } from "./backup.js";
 import { openStore } from "./db.js";
 
 const $ = (id) => document.getElementById(id);
@@ -19,6 +20,15 @@ let editing = null,
   chosen = [],
   toastTimer;
 let saving = false;
+const backups = createBackupTools({
+  slug: "to-buy", name: "To Buy", version: "1.3.0",
+  records: () => ({ items: state.items, tags: state.tags }),
+  hasRecords: () => Boolean(state.items.length || state.tags.length),
+  snapshot: () => ({ format: "to-buy", version: 1, ...structuredClone(state) }),
+  exportNormal: () => exportBackup(), restore: () => $("import").click(),
+  lastNormal: () => state.lastBackup ? `Last normal export: ${dateLabel(state.lastBackup)}` : "No normal backup exported yet",
+  refresh: () => render(),
+});
 
 // Construct DOM nodes instead of interpolating user data into HTML.
 function el(tag, text, className) {
@@ -120,6 +130,7 @@ function render() {
     history: renderHistory,
     settings: renderSettings,
   })[page]();
+  if (page === "active") backups.reminder(main);
 }
 function searchBox(onChange, placeholder) {
   const input = el("input");
@@ -541,43 +552,11 @@ function renderSettings() {
     change((s) => {
       s.settings.theme = select.value;
     });
-  main.append(
-    panel(el("h2", "Appearance"), select),
-    panel(
-      el("h2", "Backup and restore"),
-      el(
-        "p",
-        "Your data is stored on this device. Export a backup regularly.",
-        "muted",
-      ),
-      el(
-        "small",
-        state.lastBackup
-          ? `Last export: ${dateLabel(state.lastBackup)}`
-          : "No backup exported yet",
-      ),
-      button("Export JSON backup", exportBackup, "primary"),
-      button("Restore JSON backup", () => $("import").click()),
-    ),
-    panel(
-      el("h2", "About To Buy"),
-      el("p", "Version 1.2 · Offline-first PWA", "muted"),
-      el("p", "Free, with no accounts, ads or cloud synchronization.", "muted"),
-    ),
-    panel(
-      el("h2", "Privacy & Analytics"),
-      el(
-        "p",
-        "Your personal records are stored locally on your device and are not uploaded to a server.",
-        "muted",
-      ),
-      el(
-        "p",
-        "Cloudflare Web Analytics collects aggregate usage statistics without accessing your saved records or using tracking cookies.",
-        "muted",
-      ),
-    ),
-  );
+  const appearance = panel(el("h2", "Appearance"), select);
+  appearance.className = "common-settings-card";
+  const common = el("div", undefined, "common-settings");
+  main.append(appearance, common);
+  backups.settings(common);
 }
 async function exportBackup() {
   const backup = {
@@ -753,6 +732,10 @@ async function init() {
     }
   };
   render();
+  void backups.requestPersistence();
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && page === "active" && !editor.open) backups.reminder(main);
+  });
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker
       .register("./sw.js", { updateViaCache: "none" })

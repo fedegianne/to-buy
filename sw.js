@@ -1,9 +1,10 @@
-const CACHE = "to-buy-v3.1";
+const CACHE = "to-buy-v3.2";
 
 const FILES = [
   "./",
   "./index.html",
   "./styles.css",
+  "./backup.js",
   "./app.js",
   "./db.js",
   "./manifest.json",
