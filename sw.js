@@ -1,73 +1,61 @@
-const CACHE = "to-buy-v3.3";
-
+const CACHE = "ultragym-v5";
 const FILES = [
   "./",
   "./index.html",
   "./styles.css",
   "./backup.js",
-  "./app.js",
-  "./db.js",
+  "./js/app.js",
+  "./js/model.js",
+  "./js/db.js",
+  "./js/charts.js",
   "./manifest.json",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
+  "./icons/icon-maskable.png",
 ];
-
-// Install the new version using fresh files.
-self.addEventListener("install", (e) => {
-  e.waitUntil(
+self.addEventListener("install", (event) => {
+  event.waitUntil(
     (async () => {
       const cache = await caches.open(CACHE);
-
       await cache.addAll(
         FILES.map((file) => new Request(file, { cache: "reload" })),
       );
-
       await self.skipWaiting();
     })(),
   );
 });
-
-// Remove outdated caches and activate the new version.
-self.addEventListener("activate", (e) => {
-  e.waitUntil(
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
     (async () => {
       const keys = await caches.keys();
-
       await Promise.all(
         keys
-          .filter((k) => k.startsWith("to-buy-") && k !== CACHE)
+          .filter((k) => k.startsWith("ultragym-") && k !== CACHE)
           .map((k) => caches.delete(k)),
       );
-
       await self.clients.claim();
     })(),
   );
 });
-
-// Serve the current cached version and preserve offline access.
-self.addEventListener("fetch", (e) => {
+self.addEventListener("fetch", (event) => {
+  const request = event.request;
   if (
-    e.request.method !== "GET" ||
-    new URL(e.request.url).origin !== location.origin ||
-    !e.request.url.startsWith(self.registration.scope)
+    request.method !== "GET" ||
+    new URL(request.url).origin !== self.location.origin ||
+    !request.url.startsWith(self.registration.scope)
   )
     return;
-
-  e.respondWith(
+  event.respondWith(
     (async () => {
       const cache = await caches.open(CACHE);
-      const cached = await cache.match(e.request);
-
-      if (cached) return cached;
-
+      const hit = await cache.match(request);
+      if (hit) return hit;
       try {
-        return await fetch(e.request);
-      } catch {
-        if (e.request.mode === "navigate") {
-          return (await cache.match("./index.html")) || Response.error();
-        }
-
-        return Response.error();
+        return await fetch(request);
+      } catch (e) {
+        return request.mode === "navigate"
+          ? (await cache.match("./index.html")) || Response.error()
+          : Response.error();
       }
     })(),
   );

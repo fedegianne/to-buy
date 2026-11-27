@@ -8,80 +8,30 @@
     />
     <meta name="theme-color" content="#397c68" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <link rel="manifest" href="manifest.json" />
-    <link rel="apple-touch-icon" href="icons/icon-192.png" />
-    <link rel="icon" type="image/png" href="icons/icon-192.png" />
-    <link rel="stylesheet" href="styles.css" />
-    <title>To Buy</title>
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="UltraGYM" />
+    <title>UltraGYM</title>
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+    <link rel="icon" href="./icons/icon-192.png" />
+    <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <header id="header" class="app-brand-header">
+    <header id="header">
       <div class="brand">
-        <img class="brand-mark" src="./icons/icon-192.png" alt="" /> To Buy
+        <img class="brand-mark" src="./icons/icon-192.png" alt="" /> UltraGYM
       </div>
     </header>
-    <header class="page-heading">
-      <div>
-        <h1 id="title">To Buy</h1>
-      </div>
-      <button id="add" class="primary" aria-label="Add item">＋ Add</button>
-    </header>
-    <main id="main" tabindex="-1"></main>
-    <nav aria-label="Navigation">
-      <button data-page="active"><span>☷</span>To Buy</button>
-      <button data-page="tags"><span>◇</span>Tags</button>
-      <button data-page="history"><span>↶</span>History</button>
-      <button data-page="settings"><span>⚙</span>Settings</button>
-    </nav>
-    <dialog id="editor">
-      <form id="item-form">
-        <h2 id="editor-title">Add item</h2>
-        <label
-          >Item name<input
-            id="name"
-            required
-            maxlength="200"
-            placeholder="What do you need to buy?"
-        /></label>
-        <label>Tags</label>
-        <div id="chosen" class="chips"></div>
-        <div class="line">
-          <input
-            id="tag-input"
-            placeholder="Search or create tag"
-            maxlength="80"
-            autocomplete="off"
-            aria-label="Search or create tag"
-          /><button type="button" id="add-tag">Add</button>
-        </div>
-        <div id="suggestions" class="chips"></div>
-        <label class="line"
-          ><input type="checkbox" id="priority" /> Priority item</label
-        >
-        <label
-          >Notes<textarea
-            id="notes"
-            rows="3"
-            placeholder="Size, model, colour…"
-          ></textarea>
-        </label>
-        <label
-          >Product link<input id="url" type="url" placeholder="https://…"
-        /></label>
-        <div class="line actions">
-          <button type="button" id="cancel">Cancel</button
-          ><button class="primary" type="submit">Save item</button>
-        </div>
-      </form>
-    </dialog>
+    <main id="app" aria-live="off">Opening your training log…</main>
+    <nav id="nav" aria-label="Main navigation"></nav>
+    <dialog id="modal"></dialog>
     <div id="toast" role="status" aria-live="polite"></div>
-    <input type="file" id="import" accept="application/json,.json" hidden />
-    <script type="module" src="app.js"></script>
+    <script type="module" src="./js/app.js"></script>
     <!-- Cloudflare Web Analytics -->
     <script
       type="module"
       src="https://static.cloudflareinsights.com/beacon.min.js"
-      data-cf-beacon='{"token": "c0956c55344b4209b38145afac792b84"}'
+      data-cf-beacon='{"token":"c0956c55344b4209b38145afac792b84"}'
     ></script>
     <!-- End Cloudflare Web Analytics -->
   </body>
