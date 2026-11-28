@@ -1,4 +1,4 @@
-const CACHE = "to-buy-v3.4";
+const CACHE = "to-buy-v3.4-icons";
 
 const FILES = [
   "./",
