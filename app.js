@@ -23,7 +23,7 @@ let saving = false;
 const backups = createBackupTools({
   slug: "to-buy",
   name: "To Buy",
-  version: "1.3.1",
+  version: "1.3.2",
   records: () => ({ items: state.items, tags: state.tags }),
   hasRecords: () => Boolean(state.items.length || state.tags.length),
   snapshot: () => ({ format: "to-buy", version: 1, ...structuredClone(state) }),
